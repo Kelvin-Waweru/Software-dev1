@@ -3,55 +3,58 @@
   <head>
     <title>Calculator</title>
     <style>
-     .calculator {
-  width: 300px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f4f4f4;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+      .calculator {
+        width: 300px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
 
-#result {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px;
-  font-size: 24px;
-  text-align: right;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+      #result {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        font-size: 24px;
+        text-align: right;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
 
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
-}
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 10px;
+      }
 
-button {
-  width: 100%;
-  padding: 20px;
-  font-size: 18px;
-  background-color: #05c7f8;
-  border: 1px solid #54d7ee;
-  border-radius: 5px;
-  cursor: pointer;
-}
+      button {
+        width: 100%;
+        padding: 20px;
+        font-size: 18px;
+        background-color: #05c7f8;
+        border: 1px solid #54d7ee;
+        border-radius: 5px;
+        cursor: pointer;
+      }
 
-button:hover {
-  background-color: #5d0af7;
-}
+      button:hover {
+        background-color: #5d0af7;
+      }
 
-button:active {
-  background-color: #bbb;
-}
-</style>
+      button:active {
+        background-color: #bbb;
+      }
+    </style>
   </head>
   <body>
     <div class="calculator">
       <input type="text" id="result" readonly>
       <div class="buttons">
         <button onclick="clearResult()">C</button>
+        <button onclick="appendValue('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="clearLastValue()">Del</button>
         <button onclick="appendValue('/')">/</button>
         <button onclick="appendValue('*')">x</button>       
         <button onclick="appendValue('-')">-</button>
@@ -59,19 +62,77 @@ button:active {
         <button onclick="appendValue('1')">1</button>
         <button onclick="appendValue('2')">2</button>
         <button onclick="appendValue('3')">3</button>
-         <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('4')">4</button>
         <button onclick="appendValue('5')">5</button>
         <button onclick="appendValue('6')">6</button>
         <button onclick="appendValue('7')">7</button>
         <button onclick="appendValue('8')">8</button>
         <button onclick="appendValue('9')">9</button>        
         <button onclick="appendValue('0')">0</button>
-        <button onclick="appendValue('.')">.</button>
-        <button onclick="calculate()">=</button>
-        <button onclick="clearLastValue()">CE</button>
-
+        <button onclick="convertToDecimal()">Dec</button>
+        <button onclick="convertToHex()">Hex</button>
+        <button onclick="convertToOctal()">Oct</button>
       </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+      let result = document.getElementById("result");
+      let currentExpression = "";
+
+      function clearResult() {
+        result.value = "";
+        currentExpression = "";
+      }
+
+      function clearLastValue() {
+        currentExpression = currentExpression.slice(0, -1);
+        result.value = currentExpression;
+      }
+
+      function appendValue(value) {
+        currentExpression += value;
+        result.value = currentExpression;
+      }
+
+      function calculate() {
+        try {
+          result.value = eval(currentExpression);
+          currentExpression = result.value;
+        } catch (error) {
+          result.value = "Error";
+        }
+      }
+
+      function convertToDecimal() {
+        try {
+          const decimalResult = parseInt(currentExpression, 2);
+          result.value = decimalResult;
+          currentExpression = decimalResult.toString();
+        } catch (error) {
+          result.value = "Error";
+        }
+      }
+
+      function convertToHex() {
+        try {
+          const decimalResult = parseInt(currentExpression, 2);
+          const hexResult = decimalResult.toString(16).toUpperCase();
+          result.value = hexResult;
+          currentExpression = hexResult;
+        } catch (error) {
+          result.value = "Error";
+        }
+      }
+
+      function convertToOctal() {
+        try {
+          const decimalResult = parseInt(currentExpression, 2);
+          const octalResult = decimalResult.toString(8);
+          result.value = octalResult;
+          currentExpression = octalResult;
+        } catch (error) {
+          result.value = "Error";
+        }
+      }
+    </script>
   </body>
 </html>
